@@ -3,19 +3,14 @@
 
 #include <QDebug>
 #include <QList>
-#include <QVector>
-
-#include <vector>
 
 int main()
 {
     QList<Aluno *> alunos;
 
-    alunos.push_back(new Aluno("Dri", 22, 8.9));
-    alunos.push_back(new Aluno("Sobral", 23, 8.9));
-    alunos.push_back(new Aluno("Caio", 24, 9.1));
-    alunos.push_back(new Aluno("Milena", 25, 9));
-    alunos.push_back(new Aluno("Ramona", 17, 9.5));
+    alunos << new Aluno("Dri", 22, 8.9) << new Aluno("Sobral", 23, 8.9);
+    alunos << new Aluno("Caio", 24, 9.1) << new Aluno("Milena", 25, 9);
+    alunos << new Aluno("Ramona", 17, 9.5);
 
     IteratorSuperPower<QList, Aluno, QString> it(alunos, &Aluno::nome, "==", "Caio");
 
