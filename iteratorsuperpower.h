@@ -8,12 +8,12 @@ using namespace std;
 template<template<class> class Collection, class Class, typename Type>
 class IteratorSuperPower
 {
-    typedef Type(Class::*MemberMethod)() const;
+    typedef Type (Class::*MemberMethod)() const;
 
 public:
     IteratorSuperPower(const Collection<Class *> &collection,
                        MemberMethod accessMethod,
-                       function<bool (Type, Type)> filter,
+                       const QString &op,
                        Type value);
     void first();
     void next();
@@ -21,9 +21,12 @@ public:
     Class *current() const;
 
 private:
+    bool compare(Type param, Type value) const;
+
+private:
     Collection<Class *> m_collection;
     MemberMethod m_accessMethod;
-    function<bool(Type, Type)> m_filter;
+    QString m_op;
     Type m_value;
     int m_top;
 };

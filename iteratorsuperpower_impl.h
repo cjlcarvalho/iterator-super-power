@@ -6,11 +6,11 @@
 template<template<class> class Collection, class Class, typename Type>
 IteratorSuperPower<Collection, Class, Type>::IteratorSuperPower(const Collection<Class *> &collection,
                                                                 MemberMethod accessMethod,
-                                                                function<bool (Type, Type)> filter,
+                                                                const QString &op,
                                                                 Type value) :
     m_collection(collection),
     m_accessMethod(accessMethod),
-    m_filter(filter),
+    m_op(op),
     m_value(value),
     m_top(0)
 {
@@ -25,9 +25,9 @@ void IteratorSuperPower<Collection, Class, Type>::first()
     if (m_collection.empty())
         return;
 
-    Type attributeValue = ((*m_collection[m_top]).*m_accessMethod)();
+    Type attributeValue = (m_collection[m_top]->*m_accessMethod)();
 
-    if (m_filter(attributeValue, m_value))
+    if (compare(attributeValue, m_value))
         return;
 
     next();
@@ -36,13 +36,15 @@ void IteratorSuperPower<Collection, Class, Type>::first()
 template<template<class> class Collection, class Class, typename Type>
 void IteratorSuperPower<Collection, Class, Type>::next()
 {
+    if (m_top >= m_collection.size()) return;
+
     m_top++;
 
     while(m_top < m_collection.size()) {
 
-        Type attributeValue = ((*m_collection[m_top]).*m_accessMethod)();
+        Type attributeValue = (m_collection[m_top]->*m_accessMethod)();
 
-        if (m_filter(attributeValue, m_value))
+        if (compare(attributeValue, m_value))
             break;
 
         m_top++;
@@ -59,6 +61,22 @@ template<template<class> class Collection, class Class, typename Type>
 Class *IteratorSuperPower<Collection, Class, Type>::current() const
 {
     return (m_top < m_collection.size()) ? m_collection[m_top] : nullptr;
+}
+
+template<template<class> class Collection, class Class, typename Type>
+bool IteratorSuperPower<Collection, Class, Type>::compare(Type param, Type value) const
+{
+    if (m_op == "==")
+        return value == param;
+    else if (m_op == ">=")
+        return value >= param;
+    else if (m_op == ">")
+        return value > param;
+    else if (m_op == "<=")
+        return value <= param;
+    else if (m_op == "<")
+        return value < param;
+    return false;
 }
 
 #endif // ITERATORSUPERPOWER_IMPL_H
