@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QVariant>
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 IteratorSuperPower<Collection, Class, Type>::IteratorSuperPower(const Collection<Class *> &collection,
                                                                 const char *property,
                                                                 const QString &op,
@@ -20,7 +20,7 @@ IteratorSuperPower<Collection, Class, Type>::IteratorSuperPower(const Collection
 
 }
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 void IteratorSuperPower<Collection, Class, Type>::first()
 {
     m_top = 0;
@@ -39,7 +39,7 @@ void IteratorSuperPower<Collection, Class, Type>::first()
     next();
 }
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 void IteratorSuperPower<Collection, Class, Type>::next()
 {
     if (m_top >= m_collection.size()) 
@@ -61,19 +61,19 @@ void IteratorSuperPower<Collection, Class, Type>::next()
     }
 }
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 bool IteratorSuperPower<Collection, Class, Type>::hasNext() const
 {
     return m_top < m_collection.size();
 }
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 Class *IteratorSuperPower<Collection, Class, Type>::current() const
 {
     return (m_top < m_collection.size()) ? m_collection[m_top] : nullptr;
 }
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 bool IteratorSuperPower<Collection, Class, Type>::compare(Type param) const
 {
     if (m_op == "==")
