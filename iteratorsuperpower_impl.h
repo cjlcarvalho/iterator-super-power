@@ -30,10 +30,10 @@ void IteratorSuperPower<Collection, Class, Type>::first()
 
     QObject *obj = m_collection[m_top];
 
-    QVariant var = obj->property(m_attribute);
+    QVariant attributeValue = obj->property(m_attribute);
 
-    if (var.isValid())
-        if (compare(var.value<Type>(), m_value))
+    if (attributeValue.isValid())
+        if (compare(attributeValue.value<Type>(), m_value))
             return;
 
     next();
@@ -50,10 +50,10 @@ void IteratorSuperPower<Collection, Class, Type>::next()
 
         QObject *obj = m_collection[m_top];
 
-        QVariant var = obj->property(m_attribute);
+        QVariant attributeValue = obj->property(m_attribute);
 
-        if (var.isValid())
-            if (compare(var.value<Type>(), m_value))
+        if (attributeValue.isValid())
+            if (compare(attributeValue.value<Type>(), m_value))
                 return;
 
         m_top++;
