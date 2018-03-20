@@ -8,13 +8,13 @@
 
 template<template<class> class Collection, class Class, typename Type>
 IteratorSuperPower<Collection, Class, Type>::IteratorSuperPower(const Collection<Class *> &collection,
-                                                                const char *attribute,
+                                                                const char *property,
                                                                 const QString &op,
-                                                                Type value) :
+                                                                Type compareValue) :
     m_collection(collection),
-    m_attribute(attribute),
+    m_property(property),
     m_op(op),
-    m_value(value),
+    m_compareValue(compareValue),
     m_top(0)
 {
 
@@ -30,10 +30,10 @@ void IteratorSuperPower<Collection, Class, Type>::first()
 
     QObject *obj = m_collection[m_top];
 
-    QVariant attributeValue = obj->property(m_attribute);
+    QVariant attributeValue = obj->property(m_property);
 
     if (attributeValue.isValid())
-        if (compare(attributeValue.value<Type>(), m_value))
+        if (compare(attributeValue.value<Type>()))
             return;
 
     next();
@@ -42,7 +42,8 @@ void IteratorSuperPower<Collection, Class, Type>::first()
 template<template<class> class Collection, class Class, typename Type>
 void IteratorSuperPower<Collection, Class, Type>::next()
 {
-    if (m_top >= m_collection.size()) return;
+    if (m_top >= m_collection.size()) 
+        return;
 
     m_top++;
 
@@ -50,10 +51,10 @@ void IteratorSuperPower<Collection, Class, Type>::next()
 
         QObject *obj = m_collection[m_top];
 
-        QVariant attributeValue = obj->property(m_attribute);
+        QVariant attributeValue = obj->property(m_property);
 
         if (attributeValue.isValid())
-            if (compare(attributeValue.value<Type>(), m_value))
+            if (compare(attributeValue.value<Type>()))
                 return;
 
         m_top++;
@@ -73,20 +74,20 @@ Class *IteratorSuperPower<Collection, Class, Type>::current() const
 }
 
 template<template<class> class Collection, class Class, typename Type>
-bool IteratorSuperPower<Collection, Class, Type>::compare(Type value, Type param) const
+bool IteratorSuperPower<Collection, Class, Type>::compare(Type param) const
 {
     if (m_op == "==")
-        return value == param;
+        return param == m_compareValue;
     else if (m_op == "!=")
-	return value != param;
+	    return param != m_compareValue;
     else if (m_op == ">=")
-        return value >= param;
+        return param >= m_compareValue;
     else if (m_op == ">")
-        return value > param;
+        return param > m_compareValue;
     else if (m_op == "<=")
-        return value <= param;
+        return param <= m_compareValue;
     else if (m_op == "<")
-        return value < param;
+        return param < m_compareValue;
     return false;
 }
 

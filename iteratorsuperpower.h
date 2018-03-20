@@ -1,26 +1,29 @@
 #ifndef ITERATORSUPERPOWER_H
 #define ITERATORSUPERPOWER_H
 
-using namespace std;
+#include <QString>
 
-template<template<class> class Collection, class Class, typename Type>
+template<template<class> class Collection, class Class, class Type>
 class IteratorSuperPower
 {
 public:
-    IteratorSuperPower(const Collection<Class *> &collection, const char *attribute, const QString &op, Type value);
+    IteratorSuperPower(const Collection<Class *> &collection, 
+                       const char *property, 
+                       const QString &op, 
+                       Type compareValue);
     void first();
     void next();
     bool hasNext() const;
     Class *current() const;
 
 private:
-    bool compare(Type param, Type value) const;
+    bool compare(Type param) const;
 
 private:
     Collection<Class *> m_collection;
-    const char *m_attribute;
+    const char *m_property;
     QString m_op;
-    Type m_value;
+    Type m_compareValue;
     int m_top;
 };
 
