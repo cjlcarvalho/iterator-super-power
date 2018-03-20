@@ -12,7 +12,7 @@ class IteratorSuperPower
 
 public:
     IteratorSuperPower(const Collection<Class *> &collection,
-                       MemberMethod accessMethod,
+                       const char *attribute,
                        const QString &op,
                        Type value);
     void first();
@@ -25,7 +25,7 @@ private:
 
 private:
     Collection<Class *> m_collection;
-    MemberMethod m_accessMethod;
+    const char *m_attribute;
     QString m_op;
     Type m_value;
     int m_top;

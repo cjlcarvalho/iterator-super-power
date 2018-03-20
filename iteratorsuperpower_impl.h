@@ -3,13 +3,16 @@
 
 #include "iteratorsuperpower.h"
 
+#include <QObject>
+#include <QVariant>
+
 template<template<class> class Collection, class Class, typename Type>
 IteratorSuperPower<Collection, Class, Type>::IteratorSuperPower(const Collection<Class *> &collection,
-                                                                MemberMethod accessMethod,
+                                                                const char *attribute,
                                                                 const QString &op,
                                                                 Type value) :
     m_collection(collection),
-    m_accessMethod(accessMethod),
+    m_attribute(attribute),
     m_op(op),
     m_value(value),
     m_top(0)
@@ -25,10 +28,13 @@ void IteratorSuperPower<Collection, Class, Type>::first()
     if (m_collection.empty())
         return;
 
-    Type attributeValue = (m_collection[m_top]->*m_accessMethod)();
+    QObject *obj = m_collection[m_top];
 
-    if (compare(attributeValue, m_value))
-        return;
+    QVariant var = obj->property(m_attribute);
+
+    if (var.isValid())
+        if (compare(var.value<Type>(), m_value))
+            return;
 
     next();
 }
@@ -42,10 +48,13 @@ void IteratorSuperPower<Collection, Class, Type>::next()
 
     while(m_top < m_collection.size()) {
 
-        Type attributeValue = (m_collection[m_top]->*m_accessMethod)();
+        QObject *obj = m_collection[m_top];
 
-        if (compare(attributeValue, m_value))
-            break;
+        QVariant var = obj->property(m_attribute);
+
+        if (var.isValid())
+            if (compare(var.value<Type>(), m_value))
+                return;
 
         m_top++;
     }
@@ -64,10 +73,12 @@ Class *IteratorSuperPower<Collection, Class, Type>::current() const
 }
 
 template<template<class> class Collection, class Class, typename Type>
-bool IteratorSuperPower<Collection, Class, Type>::compare(Type param, Type value) const
+bool IteratorSuperPower<Collection, Class, Type>::compare(Type value, Type param) const
 {
     if (m_op == "==")
         return value == param;
+    else if (m_op == "!=")
+	return value != param;
     else if (m_op == ">=")
         return value >= param;
     else if (m_op == ">")

@@ -7,6 +7,10 @@ class Aluno : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString nome READ nome)
+    Q_PROPERTY(int idade READ idade)
+    Q_PROPERTY(float coeficienteRendimento READ coeficienteRendimento)
+
 public:
     Aluno(const QString &nome, int idade, float coeficienteRendimento);
     QString nome() const;

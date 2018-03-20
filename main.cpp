@@ -12,7 +12,7 @@ int main()
     alunos << new Aluno("Caio", 24, 9.1) << new Aluno("Milena", 25, 9);
     alunos << new Aluno("Ramona", 17, 9.5);
 
-    IteratorSuperPower<QList, Aluno, QString> it(alunos, &Aluno::nome, "==", "Caio");
+    IteratorSuperPower<QList, Aluno, float> it(alunos, "coeficienteRendimento", ">", 9);
 
     for (it.first(); it.hasNext(); it.next())
         qDebug() << it.current()->nome();
